@@ -1,0 +1,16 @@
+{% extends 'layouts/base_page.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid p-0 mb-3 border-bottom">
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="fs-1 fw-bold">New questions</div>
+    </div>
+    <a href="{% url 'hot' %}" class="link-underline link-underline-opacity-0">popular questions</a>
+</div>
+
+{% include 'components/paginator.html' %}
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'layouts/base_page.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="d-flex align-items-center p-0 mb-3 border-bottom">
+    <div class="fs-1 fw-bold me-2">Tag:</div>
+    {% include 'components/tag.html' %}
+</div>
+
+{% include 'components/paginator.html' %}
+
+{% endblock %}
