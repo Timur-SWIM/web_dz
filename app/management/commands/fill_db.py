@@ -26,18 +26,18 @@ class Command(BaseCommand):
 
         # Create tags
         for _ in range(ratio):
-            Tag.objects.bulk_create(name=fake.word())
+            Tag.objects.create(name=fake.word())
 
         # Create UserProfile and link to users
         for user in User.objects.all():
-            UserProfile.objects.bulk_create(user=user, bio=fake.text())
+            UserProfile.objects.create(user=user, bio=fake.text())
 
         # Create questions
         for _ in range(ratio * 10):
             title = fake.sentence()
             content = fake.paragraph()
             user = random.choice(User.objects.all())
-            question = Question.objects.bulk_create(title=title, content=content, user=user)
+            question = Question.objects.create(title=title, content=content, user=user)
 
             # Add tags to questions
             tags = random.sample(list(Tag.objects.all()), random.randint(1, ratio))
@@ -46,12 +46,12 @@ class Command(BaseCommand):
             # Create answers
             for _ in range(ratio * 100):
                 content = fake.paragraph()
-                Answer.objects.bulk_create(content=content, question=question, user=random.choice(User.objects.all()))
+                Answer.objects.create(content=content, question=question, user=random.choice(User.objects.all()))
 
             # Create likes
             for _ in range(ratio * 200):
                 user = random.choice(User.objects.all())
-                like = Like.objects.bulk_create(user=user, question=question)
+                like = Like.objects.create(user=user, question=question)
                 if random.choice([True, False]):
                     like.answer = random.choice(Answer.objects.filter(question=question))
                     like.save()
