@@ -9,7 +9,7 @@ class Tag(models.Model):
     name = models.CharField(max_length=50)
 
     objects = TagManager()
-    
+
     def __str__(self):
         return self.name
 
@@ -22,10 +22,10 @@ class UserProfile(models.Model):
 
 class QuestionsManager(models.Manager):
         def newest(self):
-            return [{'question': q, 'tags': self.get_tags(q.pk)} for q in self.order_by('-creation_date')]
+            return [{'question': q, 'tags': self.get_tags(q.pk)} for q in self.order_by('-created_at')]
     
         def best(self):
-            return [{'question': q, 'tags': self.get_tags(q.pk)} for q in self.order_by('-rating')]
+            return [{'question': q, 'tags': self.get_tags(q.pk)} for q in self.order_by('-updated_at')]
     
         def with_tag(self, tag_name):
             return [{'question': q, 'tags': self.get_tags(q.pk)} for q in self.filter(tags=tag_name)]
@@ -53,10 +53,10 @@ class Question(models.Model):
 
 class AnswerManager(models.Manager):
         def newest(self, question_id):
-            return self.filter(question=question_id).order_by('-creation_date')
+            return self.filter(question=question_id).order_by('-created_at')
 
         def best(self, question_id):
-            return self.filter(question=question_id).order_by( '-is_correct', '-rating')
+            return self.filter(question=question_id).order_by( '-updated_at')
 
 class Answer(models.Model):
     content = models.TextField()

@@ -21,17 +21,17 @@ def index(request):
 
 # Hot
 def hot_questions(request):
-    questions = Question.objects.hot_questions()
+    questions = Question.objects.best()
     tags = Tag.objects.most_popular(10)
     return render(request, 'index_hot.html', {'tags': tags, 'page': paginate(questions, request), 'component_to_paginate': 'components/question.html'})
 
 # Tag
 def tag(request, tag_name):
     try:
-        tag_item = Tag.objects.get(pk=name)
+        tag_item = Tag.objects.get(pk=tag_name)
     except Tag.DoesNotExist:
         tag_item = Tag.objects.all()[0]
-    questions = Question.objects.with_tag(tag_item.name)
+    questions = Question.objects.with_tag(tag_item.tag_name)
     tags = Tag.objects.most_popular(10)
     return render(request, 'index_tags.html', {'tag_item': tag_item, 'tags': tags, 'page': paginate(questions, request), 'component_to_paginate': 'components/question.html'})
 
@@ -44,17 +44,21 @@ def question(request, question_id):
 
 # Log In
 def login(request):
-    return render(request, 'login.html', {'tags': TAGS.values()})
+    tags = Tag.objects.most_popular(10)
+    return render(request, 'login.html', {'tags': tags})
 
 # Sign Up
 def signup(request):
-    return render(request, 'signup.html', {'tags': TAGS.values()})
+    tags = Tag.objects.most_popular(10)
+    return render(request, 'signup.html', {'tags': tags})
 
 # Ask question
 def ask(request):
     title = request.GET.get('new_title', 'New title')
-    return render(request, 'ask.html', {'tags': TAGS.values(), 'title': title})
+    tags = Tag.objects.most_popular(10)
+    return render(request, 'ask.html', {'tags': tags, 'title': title})
 
 # User settings
 def settings(request):
-    return render(request, 'settings.html', {'tags': TAGS.values(), 'is_logged_in': True})
+    tags = Tag.objects.most_popular(10)
+    return render(request, 'settings.html', {'tags': tags, 'is_logged_in': True})
